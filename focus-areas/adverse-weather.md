@@ -1,20 +1,20 @@
-# Adverse Weather Perception
+# Adverse Weather Perception (악천후 지각)
 
-Computer vision under adverse weather conditions presents unique challenges. This document covers techniques and methods for robust perception in rain, fog, snow, and low-light conditions.
+악천후 조건에서의 컴퓨터 비전은 고유한 도전을 제시합니다. 이 문서는 비, 안개, 눈, 저조도 조건에서 견고한 지각을 위한 기술과 방법을 다룹니다.
 
-## 📚 Overview
+## 📚 개요
 
-**Adverse Weather Challenges:**
-- **Rain**: Water droplets, streaks, reflections
-- **Fog**: Scattering, reduced contrast, haze
-- **Snow**: Falling particles, whiteout, accumulation
-- **Low-light**: Reduced signal, noise, poor contrast
-- **Wet surfaces**: Reflections, distortions
+**악천후 도전 과제:**
+- **비**: 물방울, 스트릭, 반사
+- **안개**: 산란, 대비 감소, 안개
+- **눈**: 떨어지는 입자, 화이트아웃, 축적
+- **저조도**: 감소된 신호, 노이즈, 낮은 대비
+- **젖은 표면**: 반사, 왜곡
 
-**Key Requirements:**
-- Robustness to weather-induced degradations
-- Maintained accuracy under extreme conditions
-- Real-time performance for safety-critical applications
+**주요 요구사항:**
+- 기상 유발 열화로의 견고성
+- 극한 조건에서의 유지된 정확도
+- 안전 중요한 애플리케이션을 위한 실시간 성능
 
 ## 🔷 Rain Robustness
 
@@ -47,62 +47,36 @@ def generate_rain(image):
     return image * (1 - rain_streaks - rain_drops)
 ```
 
-### De-raining Algorithms
+### De-raining Algorithms (우막 제거 알고리즘)
 
-#### Traditional Methods
+#### 전통적 방법
 
 **Guided Filter (2011):**
-- Edge-preserving smoothing
-- Effective for removing rain streaks
-- Computationally efficient
-
-**Implementation:**
-```python
-def guided_filter_guide(x, p, r, eps):
-    """
-    x: guidance image
-    p: input image
-    r: window radius
-    eps: regularization parameter
-    """
-    mean_x = boxFilter(x, r)
-    mean_p = boxFilter(p, r)
-    mean_xp = boxFilter(x*p, r)
-    cov_xp = mean_xp - mean_x * mean_p
-    
-    mean_x2 = boxFilter(x*x, r)
-    var_x = mean_x2 - mean_x * mean_x
-    
-    a = cov_xp / (var_x + eps)
-    b = mean_p - a * mean_x
-    
-    mean_a = boxFilter(a, r)
-    mean_b = boxFilter(b, r)
-    
-    return mean_a * x + mean_b
-```
+- 에지 보존 smoothing
+- 우막 제거에 효과적
+- 계산 효율적
 
 **Deep Learning Methods:**
 
 **CIRNet (Cycle-Consistent Inverse Rain Network, 2020):**
-- **Cycle consistency** for supervision
-- **No paired training data** required
+- **Cycle consistency**: 감독을 위해
+- **No paired training data**: 필요 없음
 - **Inverse rain generation**
 
 **RBDNet (Rain Blind De-raining, 2020):**
-- **Blind de-raining** for unknown rain intensity
-- **Rain prior** for robustness
-- **Adaptive** to different rain types
+- **Blind de-raining**: 알 수 없는 비 강도
+- **Rain prior**: 견고성을 위해
+- **Adaptive**: 다른 비 유형에
 
 **Zero-Shot De-raining:**
-- **No training data** needed
-- **Self-supervised** learning
-- **Generalizes** to unseen conditions
+- **No training data**: 필요 없음
+- **Self-supervised**: 학습
+- **Generalizes**: 보지 못한 조건
 
 **Performance Comparison:**
 
-| Method | PSNR (dB) | SSIM | Real-time |
-|--------|----|-----|-------|----|
+| 방법 | PSNR (dB) | SSIM | 실시간 |
+|----|-----|-----|--|
 | CIRNet | 28.5 | 0.89 | Yes |
 | RBDNet | 27.9 | 0.87 | Yes |
 | Zero-shot | 26.8 | 0.84 | Yes |
@@ -552,21 +526,21 @@ class AutonomousDrivingPerception:
 - **Reliability**: Safety-critical
 - **Efficiency**: Limited compute resources
 
-## 📊 Performance Comparison
+## 📊 성능 비교
 
-### Synthetic Fog Test (2020)
+### 인위적 안개 테스트 (2020)
 
-| Method | PSNR | SSIM | Time (ms) |
-|--------|-----|-----|-------|
+| 방법 | PSNR | SSIM | 시간 (ms) |
+|----|----|---|------|
 | Dark Channel Prior | 28.4 | 0.85 | 15 |
 | DehazeNet | 30.2 | 0.89 | 45 |
 | AOD-Net | 31.5 | 0.91 | 25 |
 | FFA-Net | 32.8 | 0.94 | 30 |
 
-### Real-World Rain Test
+### 실제 세계 비 테스트
 
-| Method | mAP | FPS |
-|------|---|----|
+| 방법 | mAP | FPS |
+|---|---|---|
 | Baseline YOLOv8 | 52.3% | 100 |
 | With De-raining | 55.8% | 80 |
 | Weather-Aware YOLO | 58.2% | 85 |
