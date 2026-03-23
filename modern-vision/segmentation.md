@@ -1,21 +1,21 @@
-# Image Segmentation
+# Image Segmentation (이미지 세그멘테이션)
 
-Image segmentation partitions an image into meaningful regions. This document covers semantic segmentation, instance segmentation, and boundary-sensitive methods.
+이미지 세그멘테이션은 이미지를 의미 있는 영역으로 분할합니다. 이 문서는 semantic segmentation, instance segmentation, boundary-sensitive methods 를 다룹니다.
 
-## 📚 Overview
+## 📚 개요
 
-**Segmentation Tasks:**
+**세그멘테이션 과제:**
 
-1. **Semantic Segmentation**: Classify each pixel
-2. **Instance Segmentation**: Detect and segment each instance
-3. **Panoptic Segmentation**: Combine both
-4. **Video Segmentation**: Segment in video sequences
+1. **Semantic Segmentation**: 각 픽셀 분류
+2. **Instance Segmentation**: 각 인스턴스 감지 및 분할
+3. **Panoptic Segmentation**: 두 가지 통합
+4. **Video Segmentation**: 비디오 시퀀스에서 분할
 
-**Key Metrics:**
-- **mIoU** (mean Intersection over Union): Standard for semantic segmentation
-- **AP** (Average Precision): For instance segmentation
-- **PQ** (Panoptic Quality): For panoptic segmentation
-- **FPS**: Real-time performance
+**주요 지표:**
+- **mIoU** (mean Intersection over Union): semantic segmentation 표준
+- **AP** (Average Precision): instance segmentation
+- **PQ** (Panoptic Quality): panoptic segmentation
+- **FPS**: 실시간 성능
 
 ## 🔷 Semantic Segmentation
 
@@ -519,12 +519,12 @@ Hierarchical ViT (no PE)
 - Better than static convolutions
 - Used in **Dynamic Instance Segmentation**
 
-## 📊 Comprehensive Performance Comparison
+## 📊 포괄적 성능 비교
 
-### PASCAL VOC 2012 Validation
+### PASCAL VOC 2012 검증
 
-| Method | mIoU | Latency | Type |
-|--------|-----|--------|-----|
+| 방법 | mIoU | 지연 | 타입 |
+|----|----|----|--|
 | FCN | 48.4% | 150ms | CNN |
 | U-Net | 67.8% | 200ms | Medical |
 | DeepLab v3 | 77.6% | 120ms | CNN |
@@ -533,20 +533,20 @@ Hierarchical ViT (no PE)
 | SegFormer-B4 | 81.3% | 140ms | Transformer |
 | Mask2Former | 82.7% | 180ms | Transformer |
 
-### ADE20K Validation
+### ADE20K 검증
 
-| Method | mIoU | mIoU (multi-scale) |
-|--------|-----|---------------------|
+| 방법 | mIoU | mIoU (multi-scale) |
+|---|---|----|
 | DeepLab v3+ | 45.8% | 47.8% |
 | U-Net | 46.7% | 47.9% |
 | Mask2Former | 59.2% | 61.5% |
 | SegFormer-B4 | 59.8% | 61.2% |
 | Mask2Former | 59.2% | 61.5% |
 
-### Cityscapes Real-Time
+### Cityscapes 실시간
 
-| Method | mIoU | FPS | Params |
-|--------|-----|----|---------|
+| 방법 | mIoU | FPS | 파라미터 |
+|---|---|---|---|
 | Fast-SCNN | 61.4% | 87 | 3.8M |
 | BiSeNet v2 | 78.7% | 105 | 1.2M |
 | MobileSegNet | 72.3% | 95 | 4.2M |
