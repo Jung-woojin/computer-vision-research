@@ -1,16 +1,16 @@
-# CNN Fundamentals
+# CNN Fundamentals (CNN 기본 원리)
 
-Convolutional Neural Networks revolutionized computer vision. This document covers core CNN architectures, innovations, and modern developments from 2020-2026.
+Convolutional Neural Networks 는 컴퓨터 비전을 혁신했습니다. 이 문서는 2020-2026 년의 핵심 CNN 아키텍처, 혁신, 현대 발전 사항을 다룹니다.
 
-## 📚 Overview
+## 📚 개요
 
-**Convolutional Neural Networks (CNNs)** are specialized neural networks designed for processing structured grid data like images. They form the backbone of modern computer vision.
+**Convolutional Neural Networks (CNNs)** 는 이미지와 같은 구조화된 격자 데이터 처리를 위해 설계된 특수 신경망입니다. 현대 컴퓨터 비전의 핵심을 이룹니다.
 
-**Key Characteristics:**
-- Local connectivity (receptive fields)
-- Weight sharing
-- Translation equivariance
-- Hierarchical feature learning
+**주요 특징:**
+- 로컬 연결성 (수용 영역)
+- 가중치 공유
+- 병진 등변성
+- 계층적 특징 학습
 
 ## 🔷 Basic CNN Architecture
 
@@ -373,7 +373,7 @@ Concatenate all outputs
 ### EfficientNet (2019-2021)
 
 **Compound Scaling Method:**
-Uniformly scale network depth, width, and resolution with a compound coefficient:
+컴파운드 스캘링: 네트워크 깊이, 폭, 해상도를 컴파운드 계수로 균일하게 스케일링:
 ```
 depth:  d = α^φ
 width:  w = β^φ
@@ -384,8 +384,8 @@ Where α, β, γ determined via grid search, and φ controls scaling rate.
 
 **EfficientNet Variants:**
 
-| Model | Layers | Width | Resolution | Params | Top-1 Accuracy |
-|-------|--------|-------|------------|--------|---------------|
+| 모델 | 레이어 | 폭 | 해상도 | 파라미터 | Top-1 정확도 |
+|-----|------|---|----|-------|--------|
 | B0 | 53 | 1.0 | 224×224 | 5.3M | 77.6% |
 | B3 | 60 | 1.8 | 300×300 | 12.3M | 82.3% |
 | B4 | 74 | 2.2 | 380×380 | 19.2M | 83.6% |
@@ -482,12 +482,12 @@ Modernized CNN with ViT-inspired design
 - ImageNet-22k: 300 epochs, 1000 epochs fine-tuning
 - AdamW optimizer
 
-## 📊 Architecture Comparison
+## 📊 아키텍처 비교
 
-### Top-1 Accuracy on ImageNet (2020-2024)
+### ImageNet Top-1 정확도 (2020-2024)
 
-| Architecture | Accuracy | Parameters | Latency (ms) |
-|--------------|----------|------------|--------------|
+| 아키텍처 | 정확도 | 파라미터 | 지연 (ms) |
+|---------|------|-------|----|
 | ResNet-50 | 78.3% | 25.6M | 10 |
 | DenseNet-161 | 79.8% | 28.7M | 25 |
 | EfficientNet-B7 | 84.3% | 66M | 120 |
