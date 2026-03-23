@@ -1,16 +1,16 @@
-# Object Detection
+# Object Detection (Object Detection)
 
-Object detection is one of the most important and actively researched areas in computer vision. This document covers all major detection paradigms from R-CNN to modern transformer-based methods.
+Object detection 는 컴퓨터 비전에서 가장 중요하고 활발히 연구되는 분야 중 하나입니다. 이 문서는 R-CNN 부터 최신 Transformer 기반 방법까지 모든 주요 탐지 패러다임을 다룹니다.
 
-## 📚 Overview
+## 📚 개요
 
-**Object Detection** task: Given an image, predict bounding boxes and class labels for all objects.
+**Object Detection 과제**: 이미지가 주어졌을 때 모든 객체에 대해 바운딩 박스와 클래스 레이블을 예측.
 
-**Key Metrics:**
-- **mAP (mean Average Precision)**: Standard metric
-- **IoU (Intersection over Union)**: Overlap between predicted and ground truth boxes
-- **FPS (Frames Per Second)**: Real-time performance
-- **Latency**: Inference time per image
+**주요 지표:**
+- **mAP (mean Average Precision)**: 표준 성능 지표
+- **IoU (Intersection over Union)**: 예측 박스와 정답 박스의 겹침 정도
+- **FPS (Frames Per Second)**: 실시간 성능
+- **Latency**: 이미지당 추론 시간
 
 ## 🔷 Two-Stage Detectors
 
@@ -520,12 +520,12 @@ L_boxes = L_L1 + λ·L_GIoU
 | YOLOv5 | 2020 | 50.2% | Anchor-free variant |
 | YOLOv8 | 2023 | 52.5% | Anchor-free SOTA |
 
-## 📊 Comprehensive Performance Comparison
+## 📊 포괄적 성능 비교
 
-### PASCAL VOC 2012 (Single Image)
+### PASCAL VOC 2012 (단일 이미지)
 
-| Method | mAP | FPS | Latency |
-|--------|-----|-----|---------|
+| 방법 | mAP | FPS | 지연 |
+|----|---|---|--|
 | Faster R-CNN | 73.2% | 7 FPS | 140ms |
 | SSD-512 | 74.3% | 24 FPS | 42ms |
 | YOLOv4 | 75.3% | 61 FPS | 16ms |
@@ -534,8 +534,8 @@ L_boxes = L_L1 + λ·L_GIoU
 
 ### COCO 2017 Test-Dev
 
-| Method | mAP | mAP@0.5 | mAP@0.75 | mAP_s | mAP_m | mAP_l |
-|--------|-----|---------|------|-------|-------|-------|
+| 방법 | mAP | mAP@0.5 | mAP@0.75 | mAP_s | mAP_m | mAP_l |
+|---|---|------|------|-------|-------|---|
 | Cascade R-CNN | 49.0% | 67.9% | 52.7% | 28.4% | 51.4% | 63.6% |
 | YOLOv4 | 49.5% | 73.8% | 53.6% | 33.0% | 52.2% | 64.4% |
 | YOLOv8x | 55.5% | 72.5% | 60.9% | 39.1% | 61.2% | 73.2% |
