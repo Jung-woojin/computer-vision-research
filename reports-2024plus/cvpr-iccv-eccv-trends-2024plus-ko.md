@@ -375,94 +375,94 @@
   - ICCV2025는 강건 인식 축에서 강한 존재감을 보인다.
   - 동일 벤치마크 경쟁보다 과제 확장(오픈월드/장면 복잡도/실시간성) 방향으로 이동한다.
 
-## 4. Technical Deep-Dive: Structure and Bottlenecks
+## 4. 기술 심층 분석: 구조 변화와 병목
 
-This chapter avoids paper-by-paper listing and focuses on measurable shifts in research structure from 10,677 papers.
+이 장은 개별 논문 나열을 배제하고, 10,677편의 메타데이터에서 측정 가능한 구조 변화를 정량적으로 해석한다.
 
-### 4.1 Growth, Share Shift, and Momentum
+### 4.1 성장률, 점유율 이동, 모멘텀
 
-Definitions:
+정의:
 - `g(t) = N_2025(t)/N_2024(t) - 1`
 - `DeltaShare(t) = share_2025(t) - share_2024(t)`
 - `Momentum(t) = log(1 + N_2025(t)) * g(t)`
 
-| Theme | 2024 | 2025 | Growth | Share Shift (pp) | Momentum |
+| 테마 | 2024 | 2025 | 성장률 | 점유율 이동(pp) | 모멘텀 |
 |---|---:|---:|---:|---:|---:|
-| Multimodal/VLM | 490 | 889 | +81.4% | +6.36 | +5.530 |
-| Embodied/Robotics | 110 | 215 | +95.5% | +1.70 | +5.131 |
-| Agents/Reasoning | 780 | 1,250 | +60.3% | +7.15 | +4.297 |
-| Robust Perception | 1,133 | 1,736 | +53.2% | +8.96 | +3.970 |
-| Video/Temporal | 902 | 1,301 | +44.2% | +5.68 | +3.172 |
-| Generative/Diffusion | 1,177 | 1,637 | +39.1% | +6.32 | +2.893 |
-| Efficiency/Edge | 713 | 979 | +37.3% | +3.60 | +2.570 |
-| Explainability/Safety | 171 | 237 | +38.6% | +0.90 | +2.112 |
-| 3D Vision/Geometry | 1,217 | 1,392 | +14.4% | +1.14 | +1.041 |
-| Detection/Segmentation | 813 | 825 | +1.5% | -1.12 | +0.099 |
-| Other/Emerging | 999 | 668 | -33.1% | -7.58 | -2.156 |
+| 멀티모달/VLM | 490 | 889 | +81.4% | +6.36 | +5.530 |
+| Embodied/로보틱스 | 110 | 215 | +95.5% | +1.70 | +5.131 |
+| 에이전트/추론 | 780 | 1,250 | +60.3% | +7.15 | +4.297 |
+| 강건 인식 | 1,133 | 1,736 | +53.2% | +8.96 | +3.970 |
+| 비디오/시계열 | 902 | 1,301 | +44.2% | +5.68 | +3.172 |
+| 생성모델/디퓨전 | 1,177 | 1,637 | +39.1% | +6.32 | +2.893 |
+| 효율화/엣지 | 713 | 979 | +37.3% | +3.60 | +2.570 |
+| 설명가능성/안전성 | 171 | 237 | +38.6% | +0.90 | +2.112 |
+| 3D 비전/기하 | 1,217 | 1,392 | +14.4% | +1.14 | +1.041 |
+| 검출/분할 | 813 | 825 | +1.5% | -1.12 | +0.099 |
+| 기타/신규 토픽 | 999 | 668 | -33.1% | -7.58 | -2.156 |
 
-Key takeaways:
-1. Large-volume themes (Robust, Generative, 3D) remain the core portfolio.
-2. High-growth themes (Embodied, Multimodal/VLM, Agents) are likely to expand in 2026 CFP scopes.
-3. Decline of Other/Emerging share indicates a transition from topic exploration to topic consolidation.
+해석:
+1. 절대량이 큰 축(강건, 생성, 3D)이 여전히 포트폴리오의 중심이다.
+2. 상대 성장률이 큰 축(Embodied, 멀티모달/VLM, 에이전트)은 2026년 이후 CFP 확장 가능성이 높다.
+3. 기타/신규 토픽 비중 하락은 탐색 단계에서 구조화 단계로의 전환 신호다.
 
-### 4.2 Conference Specialization via LQ
+### 4.2 학회별 특화도(LQ) 분석
 
-Definition: `LQ(conf, theme) = (theme share within conf)/(theme share global)`
-- `LQ > 1`: over-indexed specialization
-- `LQ < 1`: under-indexed exposure
+정의: `LQ(conf, theme) = (학회 내 theme 비중)/(전체 theme 비중)`
+- `LQ > 1`: 평균 대비 과대표집(특화)
+- `LQ < 1`: 평균 대비 저대표집
 
-- CVPR specialization Top 5:
-  1. Explainability/Safety (LQ=1.11, 252 papers)
-  2. Robust Perception (LQ=1.11, 1,764 papers)
-  3. Efficiency/Edge (LQ=1.04, 974 papers)
-  4. Agents/Reasoning (LQ=1.03, 1,167 papers)
-  5. 3D Vision/Geometry (LQ=1.01, 1,472 papers)
-- ECCV specialization Top 5:
-  1. Other/Emerging (LQ=2.18, 608 papers)
-  2. Detection/Segmentation (LQ=1.24, 341 papers)
-  3. 3D Vision/Geometry (LQ=1.09, 477 papers)
-  4. Generative/Diffusion (LQ=1.04, 489 papers)
-  5. Video/Temporal (LQ=1.00, 369 papers)
-- ICCV specialization Top 5:
-  1. Embodied/Robotics (LQ=1.24, 111 papers)
-  2. Multimodal/VLM (LQ=1.16, 444 papers)
-  3. Agents/Reasoning (LQ=1.13, 632 papers)
-  4. Robust Perception (LQ=1.05, 830 papers)
-  5. Efficiency/Edge (LQ=1.04, 485 papers)
+- CVPR 특화 Top 5:
+1. 설명가능성/안전성 (LQ=1.11, 252편)
+2. 강건 인식 (LQ=1.11, 1,764편)
+3. 효율화/엣지 (LQ=1.04, 974편)
+4. 에이전트/추론 (LQ=1.03, 1,167편)
+5. 3D 비전/기하 (LQ=1.01, 1,472편)
+- ECCV 특화 Top 5:
+1. 기타/신규 토픽 (LQ=2.18, 608편)
+2. 검출/분할 (LQ=1.24, 341편)
+3. 3D 비전/기하 (LQ=1.09, 477편)
+4. 생성모델/디퓨전 (LQ=1.04, 489편)
+5. 비디오/시계열 (LQ=1.00, 369편)
+- ICCV 특화 Top 5:
+1. Embodied/로보틱스 (LQ=1.24, 111편)
+2. 멀티모달/VLM (LQ=1.16, 444편)
+3. 에이전트/추론 (LQ=1.13, 632편)
+4. 강건 인식 (LQ=1.05, 830편)
+5. 효율화/엣지 (LQ=1.04, 485편)
 
-Implications:
-1. Submission strategy should adapt by venue: problem framing and evaluation protocol must be venue-specific.
-2. CVPR favors scale and rapid diffusion; ECCV tends to reward tighter methodological grounding; ICCV often favors long-horizon integration.
+기술적 시사점:
+1. 동일 아이디어라도 학회별 기대값이 다르므로 문제정의와 실험 프로토콜을 분리 설계해야 한다.
+2. CVPR은 스케일/확산, ECCV는 방법론 정교화, ICCV는 장기 시공간 통합 과제에 유리한 패턴을 보인다.
 
-### 4.3 Theme Coupling Network
+### 4.3 테마 결합 네트워크
 
-Definitions:
+정의:
 - `PMI(a,b) = log(P(a,b)/(P(a)P(b)))`
 - `Coupling(a,b) = cooccur(a,b)/min(N(a),N(b))`
 
-| Rank | Theme A | Theme B | Co-Occur | PMI | Coupling |
+| 순위 | 테마 A | 테마 B | 공출현 수 | PMI | 결합강도 |
 |---:|---|---|---:|---:|---:|
-| 1 | Agents/Reasoning | Embodied/Robotics | 121 | 0.672 | 0.372 |
-| 2 | Efficiency/Edge | Robust Perception | 637 | 0.337 | 0.376 |
-| 3 | Explainability/Safety | Robust Perception | 150 | 0.313 | 0.368 |
-| 4 | Agents/Reasoning | Multimodal/VLM | 356 | 0.306 | 0.258 |
-| 5 | Agents/Reasoning | Video/Temporal | 512 | 0.201 | 0.252 |
-| 6 | Generative/Diffusion | Video/Temporal | 649 | 0.111 | 0.295 |
-| 7 | Agents/Reasoning | Generative/Diffusion | 586 | 0.091 | 0.289 |
-| 8 | Multimodal/VLM | Robust Perception | 390 | 0.051 | 0.283 |
-| 9 | Generative/Diffusion | Robust Perception | 782 | 0.034 | 0.278 |
-| 10 | Detection/Segmentation | Multimodal/VLM | 212 | 0.002 | 0.154 |
-| 11 | Efficiency/Edge | Multimodal/VLM | 218 | -0.002 | 0.158 |
-| 12 | Detection/Segmentation | Robust Perception | 434 | -0.014 | 0.265 |
+| 1 | 에이전트/추론 | Embodied/로보틱스 | 121 | 0.672 | 0.372 |
+| 2 | 효율화/엣지 | 강건 인식 | 637 | 0.337 | 0.376 |
+| 3 | 설명가능성/안전성 | 강건 인식 | 150 | 0.313 | 0.368 |
+| 4 | 에이전트/추론 | 멀티모달/VLM | 356 | 0.306 | 0.258 |
+| 5 | 에이전트/추론 | 비디오/시계열 | 512 | 0.201 | 0.252 |
+| 6 | 생성모델/디퓨전 | 비디오/시계열 | 649 | 0.111 | 0.295 |
+| 7 | 에이전트/추론 | 생성모델/디퓨전 | 586 | 0.091 | 0.289 |
+| 8 | 멀티모달/VLM | 강건 인식 | 390 | 0.051 | 0.283 |
+| 9 | 생성모델/디퓨전 | 강건 인식 | 782 | 0.034 | 0.278 |
+| 10 | 검출/분할 | 멀티모달/VLM | 212 | 0.002 | 0.154 |
+| 11 | 효율화/엣지 | 멀티모달/VLM | 218 | -0.002 | 0.158 |
+| 12 | 검출/분할 | 강건 인식 | 434 | -0.014 | 0.265 |
 
-Implications:
-1. Generative-Robust and 3D-Video couplings are structural, not transient.
-2. Multimodal/VLM creates higher downstream value when connected to Detection/Segmentation and Agents.
-3. Bridge themes likely offer better long-term impact than isolated single-theme SOTA work.
+기술적 시사점:
+1. 생성-강건, 생성-비디오 결합은 일시적 유행이 아니라 구조적 결합으로 보인다.
+2. 멀티모달/VLM은 검출/분할, 에이전트와 연결될 때 다운스트림 가치가 커진다.
+3. 단일 테마 SOTA보다 브릿지 테마 연구가 중장기 파급력에서 유리하다.
 
-### 4.4 Stack Transition: Algorithm to System
+### 4.4 방법론 스택 전환: 알고리즘에서 시스템으로
 
-| Stack Group | 2024 Coverage | 2025 Coverage | Delta |
+| 스택 그룹 | 2024 커버리지 | 2025 커버리지 | 증감 |
 |---|---:|---:|---:|
 | Foundation-VLM | 425 | 587 | +162 |
 | Generation | 878 | 968 | +90 |
@@ -471,119 +471,119 @@ Implications:
 | Deployment | 409 | 444 | +35 |
 | Safety | 256 | 293 | +37 |
 
-Implications:
-1. Foundation-VLM + Generation dominates, collapsing boundaries between recognition, retrieval, and synthesis.
-2. Joint growth of 3D and Video signals demand for dynamic scene/world modeling.
-3. Deployment growth lags behind modeling growth, exposing a productization gap.
+해석:
+1. Foundation-VLM + Generation 축이 커지며 인식/검색/생성의 경계가 빠르게 약해진다.
+2. 3D와 Video의 동시 성장은 동적 장면 이해, 월드모델 수요 증가를 반영한다.
+3. Deployment 증가폭이 모델링 증가폭을 따라가지 못해 제품화 병목이 지속된다.
 
-### 4.5 Compute Intensity vs Deployment Readiness
+### 4.5 계산집약도 대비 배포준비도
 
-Definition:
-- Heavy ratio: fraction of papers with compute-heavy keywords
-- Deploy ratio: fraction of papers with deployment keywords
-- Gap index: `Gap = Heavy - Deploy` (higher means harder to operationalize)
+정의:
+- 계산집약도(Heavy ratio): compute-heavy 키워드 포함 비율
+- 배포준비도(Deploy ratio): deployment 키워드 포함 비율
+- 격차 지수: `Gap = Heavy - Deploy` (클수록 운영 전환 난이도 큼)
 
-| Theme | Heavy Ratio | Deploy Ratio | Gap Index |
+| 테마 | 계산집약도 | 배포준비도 | 격차 지수 |
 |---|---:|---:|---:|
-| 3D Vision/Geometry | 63.3% | 7.4% | +56.0%p |
-| Generative/Diffusion | 55.9% | 6.4% | +49.5%p |
-| Video/Temporal | 54.8% | 7.0% | +47.8%p |
-| Agents/Reasoning | 34.1% | 5.3% | +28.9%p |
-| Multimodal/VLM | 31.3% | 5.7% | +25.5%p |
-| Detection/Segmentation | 30.7% | 5.9% | +24.8%p |
-| Embodied/Robotics | 29.2% | 5.2% | +24.0%p |
-| Robust Perception | 30.4% | 7.6% | +22.8%p |
-| Explainability/Safety | 20.8% | 4.2% | +16.7%p |
-| Other/Emerging | 8.1% | 0.9% | +7.2%p |
-| Efficiency/Edge | 29.0% | 44.8% | -15.8%p |
+| 3D 비전/기하 | 63.3% | 7.4% | +56.0%p |
+| 생성모델/디퓨전 | 55.9% | 6.4% | +49.5%p |
+| 비디오/시계열 | 54.8% | 7.0% | +47.8%p |
+| 에이전트/추론 | 34.1% | 5.3% | +28.9%p |
+| 멀티모달/VLM | 31.3% | 5.7% | +25.5%p |
+| 검출/분할 | 30.7% | 5.9% | +24.8%p |
+| Embodied/로보틱스 | 29.2% | 5.2% | +24.0%p |
+| 강건 인식 | 30.4% | 7.6% | +22.8%p |
+| 설명가능성/안전성 | 20.8% | 4.2% | +16.7%p |
+| 기타/신규 토픽 | 8.1% | 0.9% | +7.2%p |
+| 효율화/엣지 | 29.0% | 44.8% | -15.8%p |
 
-Implications:
-1. Generative/3D/Video tracks carry high compute debt.
-2. Without concurrent runtime optimization, paper-level progress will not map to deployment KPIs.
-3. 2026 competitiveness shifts to multi-objective optimization: accuracy, latency, cost, safety.
+해석:
+1. 생성/3D/비디오는 계산 부채가 높은 영역이다.
+2. 런타임 최적화를 동반하지 않으면 논문 성과가 운영 KPI로 연결되지 않는다.
+3. 2026년 경쟁력은 정확도 단일축이 아니라 정확도/지연/비용/안전 다목적 최적화에서 갈린다.
 
-### 4.6 Methodological Failure Patterns
+### 4.6 방법론 실패 패턴
 
-1. Benchmark overfitting: repeated optimization on narrow leaderboards underestimates domain shift risk.
-2. Missing cost disclosure: incomplete FLOPs/latency/memory/energy reporting blocks fair comparison.
-3. Safety under-specification: open-world settings often under-report false positives/hallucinations/bias.
-4. Module coupling debt: added generative priors improve scores but complicate diagnostics and stability.
-5. Long-horizon fragility: many video/agent pipelines still lack robust drift-recovery evaluation.
+1. 벤치마크 과적합: 좁은 리더보드 최적화가 분포 이동 리스크를 과소추정한다.
+2. 비용 지표 누락: FLOPs/latency/memory/energy 보고가 불완전해 비교 가능성이 떨어진다.
+3. 안전성 저명세: 오픈월드 실험에서 허위 양성/할루시네이션/편향 보고가 부족하다.
+4. 모듈 결합 부채: 생성 priors가 성능은 올려도 디버깅 난이도와 안정성 리스크를 키운다.
+5. 장기 시계열 취약: 비디오/에이전트 파이프라인에서 drift-recovery 검증이 약하다.
 
-### 4.7 Priority Rules for Research Teams
+### 4.7 연구팀 우선순위 규칙
 
-1. Prioritize bridge combinations: Generative x Robust, 3D x Video, VLM x Detection.
-2. Use dual-objective design: accuracy gains must be paired with runtime/cost constraints.
-3. Standardize a 4-layer eval protocol: in-domain, out-of-domain, adverse condition, long-horizon.
-4. Require explicit failure taxonomy in every milestone.
-5. Package reproducibility assets early: code, checkpoints, preprocessing, and logs.
+1. 브릿지 결합(생성 x 강건, 3D x 비디오, VLM x 검출)을 우선 과제로 선정한다.
+2. 정확도 목표와 런타임/비용 제약을 동일 실험 계획에서 함께 최적화한다.
+3. 평가 체계를 4층으로 고정한다: in-domain, out-of-domain, 악조건, 장기 시나리오.
+4. 모든 마일스톤에서 실패 유형 분류표를 필수 산출물로 둔다.
+5. 코드, 체크포인트, 전처리, 로그를 초기에 패키징해 재현성을 확보한다.
 
-## 5. 2026-2027 Research Agenda for Direction Setting
+## 5. 2026-2027 연구 방향 아젠다
 
-### 5.1 Priority Tracks (Impact x Feasibility)
+### 5.1 우선 트랙 (Impact x Feasibility)
 
-| Track | Technical Objective | Expected Impact | Execution Risk | Priority |
+| 트랙 | 기술 목표 | 기대 임팩트 | 실행 리스크 | 우선순위 |
 |---|---|---|---|---:|
-| T1: Generative-Robust Integration | Joint restoration and recognition under adverse inputs | Very High | Medium-High | 1 |
-| T2: Video-3D World Modeling | Long-horizon consistent dynamic scene reasoning | Very High | High | 2 |
-| T3: Open-World VLM Detection | Reduce label cost while preserving transferability | High | Medium | 3 |
-| T4: Agentic Vision Loop | Planning-action-verification with uncertainty feedback | High | High | 4 |
-| T5: Deployment Optimization Layer | Reduce latency/cost with bounded accuracy loss | High | Medium | 5 |
+| T1: 생성-강건 통합 인식 | 악조건 입력에서 복원과 인식을 공동 최적화 | 매우 높음 | 중상 | 1 |
+| T2: 비디오-3D 월드모델 | 장기 시계열에서 일관된 동적 장면 추론 | 매우 높음 | 높음 | 2 |
+| T3: 오픈월드 VLM 검출 | 라벨 비용 절감과 전이성 확보 | 높음 | 중간 | 3 |
+| T4: 에이전트형 비전 루프 | 계획-행동-검증 루프에 불확실성 피드백 통합 | 높음 | 높음 | 4 |
+| T5: 배포 최적화 레이어 | 정확도 손실을 제한하며 지연/비용 절감 | 높음 | 중간 | 5 |
 
-### 5.2 Testable Hypotheses and Protocols
+### 5.2 검증 가능한 가설과 프로토콜
 
-1. T1 hypothesis: feature-space regularization with generative priors beats input-level restoration for robustness-cost tradeoff.
-- Experiment: same backbone, restoration-first vs feature-regularized pipeline
-- Metrics: mAP/IoU, corruption error, latency
-- Success: robustness +3pp with <=15% latency overhead
+1. T1 가설: 입력 복원형보다 feature-space 정규화형 생성 priors가 강건성-비용 균형에서 우위다.
+- 실험: 동일 백본에서 restoration-first vs feature-regularized 비교
+- 지표: mAP/IoU, corruption error, latency
+- 성공 기준: 강건성 +3pp, latency 증가는 15% 이내
 
-2. T2 hypothesis: explicit+implicit hybrid 3D representation lowers long-horizon drift.
-- Experiment: explicit-only vs implicit-only vs hybrid
-- Metrics: trajectory error, temporal consistency, FPS
-- Success: >=20% drift reduction with real-time threshold
+2. T2 가설: explicit+implicit 하이브리드 3D 표현이 장기 드리프트를 낮춘다.
+- 실험: explicit-only vs implicit-only vs hybrid
+- 지표: trajectory error, temporal consistency, FPS
+- 성공 기준: drift 20% 이상 감소, 실시간 임계 충족
 
-3. T3 hypothesis: hard-negative visual-language mining outperforms prompt-only tuning in open-vocab detection.
-- Experiment: prompt augmentation vs hard-negative curriculum
-- Metrics: open-vocab mAP, false-positive rate, bias gap
-- Success: mAP +2pp and FPR -10%
+3. T3 가설: prompt-only 튜닝보다 hard-negative 시각언어 마이닝이 오픈보캐브 검출에서 우수하다.
+- 실험: prompt augmentation vs hard-negative curriculum
+- 지표: open-vocab mAP, false-positive rate, bias gap
+- 성공 기준: mAP +2pp, FPR -10%
 
-4. T4 hypothesis: uncertainty-aware planning reduces compounding error in agent loops.
-- Experiment: planner with and without uncertainty channel
-- Metrics: task success rate, recovery steps, cost per episode
-- Success: success +8pp and recovery steps -15%
+4. T4 가설: uncertainty-aware planner가 에이전트 루프의 누적 오류를 줄인다.
+- 실험: uncertainty 채널 사용/미사용 비교
+- 지표: task success rate, recovery steps, cost per episode
+- 성공 기준: 성공률 +8pp, recovery step -15%
 
-5. T5 hypothesis: joint distillation+quantization training dominates sequential compression.
-- Experiment: sequential pipeline vs joint optimization
-- Metrics: accuracy delta, latency, memory, power
-- Success: <=1pp accuracy loss with >=30% latency reduction
+5. T5 가설: 순차 압축보다 distillation+quantization 공동 학습이 우수하다.
+- 실험: sequential pipeline vs joint optimization
+- 지표: accuracy delta, latency, memory, power
+- 성공 기준: 정확도 손실 1pp 이내, latency 30% 이상 개선
 
-### 5.3 Quarter-by-Quarter Execution Template
+### 5.3 분기 실행 템플릿
 
-1. Q2 2026: lock common evaluation harness (accuracy + robustness + efficiency + safety).
-2. Q3 2026: run T1/T3 in parallel; stabilize data and safety validation stack.
-3. Q4 2026: expand T2/T4 for long-horizon integration.
-4. Q1 2027: execute T5 and produce deployment-grade runtime profile.
-5. Q2 2027: submit integrated-system paper with failure analysis and cost disclosure.
+1. 2026 Q2: 정확도+강건성+효율+안전 공통 평가 하네스 고정
+2. 2026 Q3: T1/T3 병렬 실행, 데이터 및 안전성 검증 스택 안정화
+3. 2026 Q4: T2/T4 확장, 장기 시계열 통합 실험 수행
+4. 2027 Q1: T5 적용, 배포 등급 런타임 프로파일 확보
+5. 2027 Q2: 실패 분석과 비용 지표를 포함한 통합 시스템 논문 제출
 
-## 6. Decision Rules and Reporting Standard
+## 6. 의사결정 규칙과 보고서 표준
 
-### 6.1 Project Selection Rules
+### 6.1 과제 선정 규칙
 
-1. Down-rank ideas without data/evaluation assets.
-2. Reject single-metric SOTA projects without deployment path.
-3. Prefer high-coupling bridge themes from Section 4.3.
-4. Do not start open-world projects without safety protocol.
-5. Keep only themes that can target at least two venue styles.
+1. 데이터/평가 자산이 없는 아이디어는 우선순위를 낮춘다.
+2. 배포 경로가 없는 단일 지표 SOTA 과제는 제외한다.
+3. 4.3절의 고결합 브릿지 테마를 우선 채택한다.
+4. 안전성 프로토콜 없는 오픈월드 과제는 착수하지 않는다.
+5. 최소 2개 학회 스타일에 맞출 수 있는 테마만 장기 트랙으로 유지한다.
 
-### 6.2 Minimum Paper Design Checklist
+### 6.2 최소 논문 설계 체크리스트
 
-- Problem framing: benchmark gain vs new failure mode mitigation
-- Method decomposition: isolate accuracy gains vs cost increases
-- Evaluation: accuracy + robustness + efficiency + safety (mandatory)
-- Reproducibility: code, seed, environment, checkpoint, preprocessing
-- Failure taxonomy: top-k failure types and mitigation mapping
+- 문제정의: 벤치마크 개선인지 신규 실패 모드 해결인지 명확히 구분
+- 방법 분해: 정확도 향상 요인과 비용 증가 요인을 분리 분석
+- 평가 축: 정확도, 강건성, 효율, 안전성 4축을 필수 보고
+- 재현성: 코드, 시드, 환경, 체크포인트, 전처리 공개 범위 명시
+- 실패 분석: top-k 실패 유형과 완화 전략의 매핑 제공
 
-### 6.3 Final Position
+### 6.3 최종 결론
 
-The main shift after 2024 is from isolated model competition to systems competition under multi-constraints.
-The strongest forward strategy is to design an integrated stack: problem definition, evaluation protocol, deployment path, and failure governance.
+2024년 이후의 핵심 변화는 단일 모델 성능 경쟁에서 다중 제약 기반 시스템 경쟁으로의 이동이다.
+향후 연구 방향은 모델 하나의 개선보다, 문제정의-평가-배포-실패거버넌스를 연결한 통합 기술 스택 설계에 맞춰야 한다.
