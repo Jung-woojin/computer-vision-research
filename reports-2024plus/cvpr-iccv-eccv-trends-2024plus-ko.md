@@ -375,341 +375,215 @@
   - ICCV2025는 강건 인식 축에서 강한 존재감을 보인다.
   - 동일 벤치마크 경쟁보다 과제 확장(오픈월드/장면 복잡도/실시간성) 방향으로 이동한다.
 
-## 4. ?? ??? ?? ?? (?? ?? ??)
+## 4. Technical Deep-Dive: Structure and Bottlenecks
 
-? ?? ?? ?? ??? ???? ??, 10,677?? ?????? ?? ?? ??? ???? ?? ?? ??? ????? ????.
+This chapter avoids paper-by-paper listing and focuses on measurable shifts in research structure from 10,677 papers.
 
-### 4.1 ????? ???: 2024 -> 2025
+### 4.1 Growth, Share Shift, and Momentum
 
-| ?? | 2024 ?? ? | 2025 ?? ? | ?? | ??? | 2024 ??? | 2025 ??? |
-|---|---:|---:|---:|---:|---:|---:|
-| ????/??? | 1,177 | 1,637 | +460 | +39.1% | 23.1% | 29.4% |
-| ????/VLM | 490 | 889 | +399 | +81.4% | 9.6% | 16.0% |
-| 3D ??/?? | 1,217 | 1,392 | +175 | +14.4% | 23.8% | 25.0% |
-| ???/??? | 902 | 1,301 | +399 | +44.2% | 17.7% | 23.3% |
-| ????/?? | 780 | 1,250 | +470 | +60.3% | 15.3% | 22.4% |
-| ?? ?? | 1,133 | 1,736 | +603 | +53.2% | 22.2% | 31.2% |
-| ??/?? | 813 | 825 | +12 | +1.5% | 15.9% | 14.8% |
-| ???/?? | 713 | 979 | +266 | +37.3% | 14.0% | 17.6% |
-| Embodied/???? | 110 | 215 | +105 | +95.5% | 2.2% | 3.9% |
-| ?????/??? | 171 | 237 | +66 | +38.6% | 3.3% | 4.3% |
-| ??/?? ?? | 999 | 668 | -331 | -33.1% | 19.6% | 12.0% |
+Definitions:
+- `g(t) = N_2025(t)/N_2024(t) - 1`
+- `DeltaShare(t) = share_2025(t) - share_2024(t)`
+- `Momentum(t) = log(1 + N_2025(t)) * g(t)`
 
-- ? ?? ?? 5,105??? 5,572??? +467? ????.
-- ??? ???? ??? ??? ?? ????: ??/????/???? ????, ???? ? ?? ??? ????.
-- ?, 2025?? ??? '? ??? ?? ??'?? ???? '??? ????? ??'?? ???? ????.
+| Theme | 2024 | 2025 | Growth | Share Shift (pp) | Momentum |
+|---|---:|---:|---:|---:|---:|
+| Multimodal/VLM | 490 | 889 | +81.4% | +6.36 | +5.530 |
+| Embodied/Robotics | 110 | 215 | +95.5% | +1.70 | +5.131 |
+| Agents/Reasoning | 780 | 1,250 | +60.3% | +7.15 | +4.297 |
+| Robust Perception | 1,133 | 1,736 | +53.2% | +8.96 | +3.970 |
+| Video/Temporal | 902 | 1,301 | +44.2% | +5.68 | +3.172 |
+| Generative/Diffusion | 1,177 | 1,637 | +39.1% | +6.32 | +2.893 |
+| Efficiency/Edge | 713 | 979 | +37.3% | +3.60 | +2.570 |
+| Explainability/Safety | 171 | 237 | +38.6% | +0.90 | +2.112 |
+| 3D Vision/Geometry | 1,217 | 1,392 | +14.4% | +1.14 | +1.041 |
+| Detection/Segmentation | 813 | 825 | +1.5% | -1.12 | +0.099 |
+| Other/Emerging | 999 | 668 | -33.1% | -7.58 | -2.156 |
 
-### 4.2 ???-??? 2x2 ????
+Key takeaways:
+1. Large-volume themes (Robust, Generative, 3D) remain the core portfolio.
+2. High-growth themes (Embodied, Multimodal/VLM, Agents) are likely to expand in 2026 CFP scopes.
+3. Decline of Other/Emerging share indicates a transition from topic exploration to topic consolidation.
 
-- ????????(?? ???): ????/???, ???/???, ????/??, ?? ??
-- ????????(??/????): 3D ??/??
-- ????????(?? ???): ????/VLM, ???/??, Embodied/????, ?????/???
-- ????????(??? ???): ??/??
+### 4.2 Conference Specialization via LQ
 
-??:
-1. ???????? ?? ???? ????? ?? ???? ??, ????? ?? ? ??? ?? ????.
-2. ???????? ?? ?? ???? ???? ????, ??/???/???? ???? ????.
-3. ???????? ?? ?? CFP?? ?? ?? ???? ?? ????.
-4. ???????? ?? ???? ??? ??? ??? ??? ??? ???? ??? ??? ? ??.
+Definition: `LQ(conf, theme) = (theme share within conf)/(theme share global)`
+- `LQ > 1`: over-indexed specialization
+- `LQ < 1`: under-indexed exposure
 
-### 4.3 ??? ?? ????
+- CVPR specialization Top 5:
+  1. Explainability/Safety (LQ=1.11, 252 papers)
+  2. Robust Perception (LQ=1.11, 1,764 papers)
+  3. Efficiency/Edge (LQ=1.04, 974 papers)
+  4. Agents/Reasoning (LQ=1.03, 1,167 papers)
+  5. 3D Vision/Geometry (LQ=1.01, 1,472 papers)
+- ECCV specialization Top 5:
+  1. Other/Emerging (LQ=2.18, 608 papers)
+  2. Detection/Segmentation (LQ=1.24, 341 papers)
+  3. 3D Vision/Geometry (LQ=1.09, 477 papers)
+  4. Generative/Diffusion (LQ=1.04, 489 papers)
+  5. Video/Temporal (LQ=1.00, 369 papers)
+- ICCV specialization Top 5:
+  1. Embodied/Robotics (LQ=1.24, 111 papers)
+  2. Multimodal/VLM (LQ=1.16, 444 papers)
+  3. Agents/Reasoning (LQ=1.13, 632 papers)
+  4. Robust Perception (LQ=1.05, 830 papers)
+  5. Efficiency/Edge (LQ=1.04, 485 papers)
 
-| ??(??) | ?? ? | ?? ???(HHI) | ?? 3? ?? |
-|---|---:|---:|---|
-| CVPR2024 | 2,716 | 1125 | ?? ??(858), 3D ??/??(740), ????/???(688) |
-| CVPR2025 | 2,871 | 1127 | ?? ??(906), ????/???(840), 3D ??/??(732) |
-| ECCV2024 | 2,389 | 1212 | ??/?? ??(608), ????/???(489), 3D ??/??(477) |
-| ICCV2025 | 2,701 | 1113 | ?? ??(830), ????/???(797), 3D ??/??(660) |
+Implications:
+1. Submission strategy should adapt by venue: problem framing and evaluation protocol must be venue-specific.
+2. CVPR favors scale and rapid diffusion; ECCV tends to reward tighter methodological grounding; ICCV often favors long-horizon integration.
 
-??:
-1. CVPR? ?? ??? ?? ?? ????? ??, ??? ??? ?? ??? ?? ??? ????.
-2. ECCV? ?? ????? ???? ?? ??? ???? ??? ?? ??? ????? ???.
-3. ICCV? ?? ??(???/??/3D)? ?? ?????? ???? ???? ?? ??? ???? ????.
-4. HHI ???? ??? ??? ???? ?? ???? ????, ?? ?? ??? ?? ???? ????.
+### 4.3 Theme Coupling Network
 
-### 4.4 ?? ?? ??: ??? ?? ?
+Definitions:
+- `PMI(a,b) = log(P(a,b)/(P(a)P(b)))`
+- `Coupling(a,b) = cooccur(a,b)/min(N(a),N(b))`
 
-| ?? | ?? A | ?? B | ??? ?? ? |
-|---:|---|---|---:|
-| 1 | ????/??? | ?? ?? | 782 |
-| 2 | ?? ?? | 3D ??/?? | 670 |
-| 3 | ????/??? | 3D ??/?? | 657 |
-| 4 | ????/??? | ???/??? | 649 |
-| 5 | ???/?? | ?? ?? | 637 |
-| 6 | ????/?? | ????/??? | 586 |
-| 7 | ????/?? | ?? ?? | 531 |
-| 8 | ????/?? | ???/??? | 512 |
-| 9 | ???/??? | 3D ??/?? | 491 |
-| 10 | ?? ?? | ???/??? | 485 |
-| 11 | ????/?? | 3D ??/?? | 450 |
-| 12 | ??/?? | ?? ?? | 434 |
-| 13 | ????/VLM | ?? ?? | 390 |
-| 14 | ????/?? | ????/VLM | 356 |
-| 15 | ??/?? | 3D ??/?? | 353 |
+| Rank | Theme A | Theme B | Co-Occur | PMI | Coupling |
+|---:|---|---|---:|---:|---:|
+| 1 | Agents/Reasoning | Embodied/Robotics | 121 | 0.672 | 0.372 |
+| 2 | Efficiency/Edge | Robust Perception | 637 | 0.337 | 0.376 |
+| 3 | Explainability/Safety | Robust Perception | 150 | 0.313 | 0.368 |
+| 4 | Agents/Reasoning | Multimodal/VLM | 356 | 0.306 | 0.258 |
+| 5 | Agents/Reasoning | Video/Temporal | 512 | 0.201 | 0.252 |
+| 6 | Generative/Diffusion | Video/Temporal | 649 | 0.111 | 0.295 |
+| 7 | Agents/Reasoning | Generative/Diffusion | 586 | 0.091 | 0.289 |
+| 8 | Multimodal/VLM | Robust Perception | 390 | 0.051 | 0.283 |
+| 9 | Generative/Diffusion | Robust Perception | 782 | 0.034 | 0.278 |
+| 10 | Detection/Segmentation | Multimodal/VLM | 212 | 0.002 | 0.154 |
+| 11 | Efficiency/Edge | Multimodal/VLM | 218 | -0.002 | 0.158 |
+| 12 | Detection/Segmentation | Robust Perception | 434 | -0.014 | 0.265 |
 
-??:
-1. ????-???? ??? ??/??? ??/??? ?? ??? ?? ???? ???? ??.
-2. 3D-??? ??? ?? ?? ????? ?? ?? ??? ???? ???.
-3. ????-VLM? ??/?? ??? ???? ??? ?? ?????? ?? ????.
-4. ????/??? ?? ???? ????/???? ?? ? ??? ??? ??? ???.
-5. ??? ???? ???? ?? ??, ?? ???? ?? ??? ??? ? ??? ??? ?? ????.
+Implications:
+1. Generative-Robust and 3D-Video couplings are structural, not transient.
+2. Multimodal/VLM creates higher downstream value when connected to Detection/Segmentation and Agents.
+3. Bridge themes likely offer better long-term impact than isolated single-theme SOTA work.
 
-### 4.5 ??? ?? ??: 2024 ?? 2025
+### 4.4 Stack Transition: Algorithm to System
 
-- 2025 ?? ?? ??? Top 20:
-  1. `reasoning` (106?)
-  2. `depth` (94?)
-  3. `space` (83?)
-  4. `training-free` (79?)
-  5. `generalizable` (77?)
-  6. `foundation` (75?)
-  7. `flow` (75?)
-  8. `fine-grained` (71?)
-  9. `consistent` (71?)
-  10. `priors` (68?)
-  11. `perception` (68?)
-
-- 2025 ????? ??? ??? Top 20:
-  1. `fields` (92?)
-  2. `action` (86?)
-  3. `view` (73?)
-  4. `radiance` (71?)
-  5. `implicit` (67?)
-  6. `open-vocabulary` (66?)
-  7. `face` (65?)
-  8. `super-resolution` (63?)
-  9. `sparse` (62?)
-  10. `tracking` (61?)
-  11. `networks` (61?)
-
-??:
-1. ?? ?? ???? ??? ????(???, ??, ??)? ???? ??(????, ????) ??? ????.
-2. ?? ???? ?? ?? ??? ??? ????? ??, ?? ?? ???? ???? ??? ???.
-3. ??? ??? ?? ??? ??? ?? ?? ??(??? ?? ?? -> ?? ?? ??)? ????.
-
-### 4.6 ??? ?? ??
-
-| ?? ?? | 2024 ?? ?? ? | 2025 ?? ?? ? | ?? |
+| Stack Group | 2024 Coverage | 2025 Coverage | Delta |
 |---|---:|---:|---:|
-| Foundation/VLM | 425 | 587 | +162 |
-| Generation/Diffusion | 878 | 968 | +90 |
-| 3D/Geometry | 388 | 582 | +194 |
-| Video/Temporal | 316 | 364 | +48 |
-| Efficiency/Deployment | 409 | 444 | +35 |
-| Safety/Robustness | 255 | 292 | +37 |
+| Foundation-VLM | 425 | 587 | +162 |
+| Generation | 878 | 968 | +90 |
+| 3D-Geometry | 901 | 1,018 | +117 |
+| Video-Temporal | 606 | 828 | +222 |
+| Deployment | 409 | 444 | +35 |
+| Safety | 256 | 293 | +37 |
 
-??:
-1. Foundation/VLM + Generation ?? ??? ???, ??/??/?? ??? ???? ??.
-2. 3D/Geometry? Video/Temporal? ?? ???? ?? ??????? ???? ??? ????.
-3. Efficiency/Deployment? ??? ?? ??? ?? ???? ???? ??? ??(?????)? ??? ????? ???.
-4. Safety/Robustness? ?? ???? ???, ?? ??? ???? ???? ?????? ??? ????.
+Implications:
+1. Foundation-VLM + Generation dominates, collapsing boundaries between recognition, retrieval, and synthesis.
+2. Joint growth of 3D and Video signals demand for dynamic scene/world modeling.
+3. Deployment growth lags behind modeling growth, exposing a productization gap.
 
-### 4.7 ???-???? ?? ??
+### 4.5 Compute Intensity vs Deployment Readiness
 
-1. ?? ?? ??? ??: ???? ??? ??? ??????? ??? ??? ???? ??? ??? ??.
-2. ??? ??? ???: ????/???? ??? ??? ??? ??? ?? ??? ????.
-3. ?? ?? ???: ???3D???? ?? ?????? ???? ?? ???? ??? ?? ????.
-4. ??? ???: ???? ??? ?? ??/?? ?? ?? ??? ????? ???? ??? ???.
-5. ??? ???: ?? ??/??? ??? ?? ??? ?? ?? ??? ??? ? ??.
+Definition:
+- Heavy ratio: fraction of papers with compute-heavy keywords
+- Deploy ratio: fraction of papers with deployment keywords
+- Gap index: `Gap = Heavy - Deploy` (higher means harder to operationalize)
 
-### 4.8 12~24?? ?? (?? ??)
+| Theme | Heavy Ratio | Deploy Ratio | Gap Index |
+|---|---:|---:|---:|
+| 3D Vision/Geometry | 63.3% | 7.4% | +56.0%p |
+| Generative/Diffusion | 55.9% | 6.4% | +49.5%p |
+| Video/Temporal | 54.8% | 7.0% | +47.8%p |
+| Agents/Reasoning | 34.1% | 5.3% | +28.9%p |
+| Multimodal/VLM | 31.3% | 5.7% | +25.5%p |
+| Detection/Segmentation | 30.7% | 5.9% | +24.8%p |
+| Embodied/Robotics | 29.2% | 5.2% | +24.0%p |
+| Robust Perception | 30.4% | 7.6% | +22.8%p |
+| Explainability/Safety | 20.8% | 4.2% | +16.7%p |
+| Other/Emerging | 8.1% | 0.9% | +7.2%p |
+| Efficiency/Edge | 29.0% | 44.8% | -15.8%p |
 
-1. ????? ?? ????? ???/??/?? ??? ????? ?? ??? ?? ??? ???? ??.
-2. VLM ?? ??????? ??/??? ????? ????, ??? ???? ?? ??? ?? ??? ??.
-3. ????3D ?? ??? ????/????? ???? ?? ???? ??? ???? ??.
-4. ????? ??? ?? ?? ???? ??-??-?? ??? ?? ?? ??? ???? ??.
-5. ?? ??? ?? ??? ???? ??? ??/??/??/???? ?? ???? ??? ???? ??.
-6. ??? ???? ?? ?????? ??? ?????? ?? ??? ?? ???? ? ?? ?? ???.
-7. ?? ? ???? ????? ?????, ?? ?? ???? ?? ?? ???? ???? ??? ????.
-8. ??? ??(??/??/????) ????? ????? ?? ?? ???? ?? ?? ??? ???? ???? ??.
-9. ?? SOTA?? ????? ??? ??(??? ??-??-??-????)? ????? ? ? ??? ???.
-10. 2027???? ????? ??(Foundation + Specialized Head + Runtime Optimizer)? ?? ??? ? ???? ??.
+Implications:
+1. Generative/3D/Video tracks carry high compute debt.
+2. Without concurrent runtime optimization, paper-level progress will not map to deployment KPIs.
+3. 2026 competitiveness shifts to multi-objective optimization: accuracy, latency, cost, safety.
 
-??: 4?? ??? '?? ? ??'? ??? '?? ?? ??'??. 2025?? ????????? ??? ????? ???? ??? ????? ????.
+### 4.6 Methodological Failure Patterns
 
-## 5. 교차 학회 비교 인사이트 120선
+1. Benchmark overfitting: repeated optimization on narrow leaderboards underestimates domain shift risk.
+2. Missing cost disclosure: incomplete FLOPs/latency/memory/energy reporting blocks fair comparison.
+3. Safety under-specification: open-world settings often under-report false positives/hallucinations/bias.
+4. Module coupling debt: added generative priors improve scores but complicate diagnostics and stability.
+5. Long-horizon fragility: many video/agent pipelines still lack robust drift-recovery evaluation.
 
-1. 강건 인식은/는 CVPR2025에서 상대적으로 강하고 ECCV2024에서 상대적으로 약하게 나타난다.
-2. 강건 인식은/는 2024 대비 2025에 +603편 증가했다.
-3. 생성모델/디퓨전은/는 CVPR2025에서 상대적으로 강하고 ECCV2024에서 상대적으로 약하게 나타난다.
-4. 생성모델/디퓨전은/는 2024 대비 2025에 +460편 증가했다.
-5. 3D 비전/기하은/는 CVPR2024에서 상대적으로 강하고 ECCV2024에서 상대적으로 약하게 나타난다.
-6. 3D 비전/기하은/는 2024 대비 2025에 +175편 증가했다.
-7. 비디오/시계열은/는 CVPR2025에서 상대적으로 강하고 ECCV2024에서 상대적으로 약하게 나타난다.
-8. 비디오/시계열은/는 2024 대비 2025에 +399편 증가했다.
-9. 에이전트/추론은/는 ICCV2025에서 상대적으로 강하고 ECCV2024에서 상대적으로 약하게 나타난다.
-10. 에이전트/추론은/는 2024 대비 2025에 +470편 증가했다.
-11. 효율화/엣지은/는 CVPR2025에서 상대적으로 강하고 ECCV2024에서 상대적으로 약하게 나타난다.
-12. 효율화/엣지은/는 2024 대비 2025에 +266편 증가했다.
-13. 기타/신규 토픽은/는 ECCV2024에서 상대적으로 강하고 ICCV2025에서 상대적으로 약하게 나타난다.
-14. 기타/신규 토픽은/는 2024 대비 2025에 -331편 감소했다.
-15. 검출/분할은/는 CVPR2024에서 상대적으로 강하고 ECCV2024에서 상대적으로 약하게 나타난다.
-16. 검출/분할은/는 2024 대비 2025에 +12편 증가했다.
-17. 멀티모달/VLM은/는 CVPR2025에서 상대적으로 강하고 ECCV2024에서 상대적으로 약하게 나타난다.
-18. 멀티모달/VLM은/는 2024 대비 2025에 +399편 증가했다.
-19. 설명가능성/안전성은/는 CVPR2024에서 상대적으로 강하고 ECCV2024에서 상대적으로 약하게 나타난다.
-20. 설명가능성/안전성은/는 2024 대비 2025에 +66편 증가했다.
-21. Embodied/로보틱스은/는 ICCV2025에서 상대적으로 강하고 ECCV2024에서 상대적으로 약하게 나타난다.
-22. Embodied/로보틱스은/는 2024 대비 2025에 +105편 증가했다.
-23. 인사이트 023: 강건 인식은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-24. 인사이트 024: 생성모델/디퓨전은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-25. 인사이트 025: 3D 비전/기하은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-26. 인사이트 026: 비디오/시계열은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-27. 인사이트 027: 에이전트/추론은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-28. 인사이트 028: 효율화/엣지은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-29. 인사이트 029: 기타/신규 토픽은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-30. 인사이트 030: 검출/분할은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-31. 인사이트 031: 멀티모달/VLM은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-32. 인사이트 032: 설명가능성/안전성은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-33. 인사이트 033: Embodied/로보틱스은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-34. 인사이트 034: 강건 인식은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-35. 인사이트 035: 생성모델/디퓨전은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-36. 인사이트 036: 3D 비전/기하은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-37. 인사이트 037: 비디오/시계열은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-38. 인사이트 038: 에이전트/추론은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-39. 인사이트 039: 효율화/엣지은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-40. 인사이트 040: 기타/신규 토픽은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-41. 인사이트 041: 검출/분할은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-42. 인사이트 042: 멀티모달/VLM은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-43. 인사이트 043: 설명가능성/안전성은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-44. 인사이트 044: Embodied/로보틱스은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-45. 인사이트 045: 강건 인식은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-46. 인사이트 046: 생성모델/디퓨전은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-47. 인사이트 047: 3D 비전/기하은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-48. 인사이트 048: 비디오/시계열은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-49. 인사이트 049: 에이전트/추론은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-50. 인사이트 050: 효율화/엣지은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-51. 인사이트 051: 기타/신규 토픽은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-52. 인사이트 052: 검출/분할은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-53. 인사이트 053: 멀티모달/VLM은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-54. 인사이트 054: 설명가능성/안전성은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-55. 인사이트 055: Embodied/로보틱스은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-56. 인사이트 056: 강건 인식은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-57. 인사이트 057: 생성모델/디퓨전은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-58. 인사이트 058: 3D 비전/기하은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-59. 인사이트 059: 비디오/시계열은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-60. 인사이트 060: 에이전트/추론은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-61. 인사이트 061: 효율화/엣지은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-62. 인사이트 062: 기타/신규 토픽은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-63. 인사이트 063: 검출/분할은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-64. 인사이트 064: 멀티모달/VLM은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-65. 인사이트 065: 설명가능성/안전성은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-66. 인사이트 066: Embodied/로보틱스은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-67. 인사이트 067: 강건 인식은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-68. 인사이트 068: 생성모델/디퓨전은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-69. 인사이트 069: 3D 비전/기하은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-70. 인사이트 070: 비디오/시계열은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-71. 인사이트 071: 에이전트/추론은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-72. 인사이트 072: 효율화/엣지은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-73. 인사이트 073: 기타/신규 토픽은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-74. 인사이트 074: 검출/분할은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-75. 인사이트 075: 멀티모달/VLM은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-76. 인사이트 076: 설명가능성/안전성은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-77. 인사이트 077: Embodied/로보틱스은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-78. 인사이트 078: 강건 인식은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-79. 인사이트 079: 생성모델/디퓨전은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-80. 인사이트 080: 3D 비전/기하은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-81. 인사이트 081: 비디오/시계열은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-82. 인사이트 082: 에이전트/추론은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-83. 인사이트 083: 효율화/엣지은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-84. 인사이트 084: 기타/신규 토픽은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-85. 인사이트 085: 검출/분할은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-86. 인사이트 086: 멀티모달/VLM은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-87. 인사이트 087: 설명가능성/안전성은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-88. 인사이트 088: Embodied/로보틱스은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-89. 인사이트 089: 강건 인식은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-90. 인사이트 090: 생성모델/디퓨전은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-91. 인사이트 091: 3D 비전/기하은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-92. 인사이트 092: 비디오/시계열은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-93. 인사이트 093: 에이전트/추론은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-94. 인사이트 094: 효율화/엣지은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-95. 인사이트 095: 기타/신규 토픽은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-96. 인사이트 096: 검출/분할은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-97. 인사이트 097: 멀티모달/VLM은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-98. 인사이트 098: 설명가능성/안전성은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-99. 인사이트 099: Embodied/로보틱스은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-100. 인사이트 100: 강건 인식은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-101. 인사이트 101: 생성모델/디퓨전은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-102. 인사이트 102: 3D 비전/기하은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-103. 인사이트 103: 비디오/시계열은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-104. 인사이트 104: 에이전트/추론은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-105. 인사이트 105: 효율화/엣지은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-106. 인사이트 106: 기타/신규 토픽은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-107. 인사이트 107: 검출/분할은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-108. 인사이트 108: 멀티모달/VLM은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-109. 인사이트 109: 설명가능성/안전성은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-110. 인사이트 110: Embodied/로보틱스은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-111. 인사이트 111: 강건 인식은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-112. 인사이트 112: 생성모델/디퓨전은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-113. 인사이트 113: 3D 비전/기하은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-114. 인사이트 114: 비디오/시계열은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-115. 인사이트 115: 에이전트/추론은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-116. 인사이트 116: 효율화/엣지은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-117. 인사이트 117: 기타/신규 토픽은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-118. 인사이트 118: 검출/분할은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-119. 인사이트 119: 멀티모달/VLM은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
-120. 인사이트 120: 설명가능성/안전성은 데이터 규모 확대와 벤치마크 복합화의 영향을 동시에 받는 영역이다.
+### 4.7 Priority Rules for Research Teams
 
-## 6. 2026-2027 전망 및 실행 제안
+1. Prioritize bridge combinations: Generative x Robust, 3D x Video, VLM x Detection.
+2. Use dual-objective design: accuracy gains must be paired with runtime/cost constraints.
+3. Standardize a 4-layer eval protocol: in-domain, out-of-domain, adverse condition, long-horizon.
+4. Require explicit failure taxonomy in every milestone.
+5. Package reproducibility assets early: code, checkpoints, preprocessing, and logs.
 
-1. 기초모델 기반 파이프라인은 태스크 특화 파인튜닝보다 데이터/평가 설계 역량이 성패를 좌우한다.
-2. 비디오·3D·로보틱스는 공통적으로 시공간 일관성과 메모리 비용 최적화가 핵심 병목이다.
-3. 생성모델 기반 복원/편집 기법은 인식 파이프라인의 전처리와 후처리를 동시에 재정의한다.
-4. 오픈보캐브러리 검출/분할은 라벨 비용을 낮추지만 안전성/허위탐지 관리가 필수다.
-5. 현업 적용에서는 정확도 단일지표보다 latency, power, failure mode 지표의 가중치가 높아진다.
-6. 학회 성과를 제품으로 전환하려면 데이터 거버넌스와 지속평가(MLOps) 체계가 선행되어야 한다.
-7. 기초모델 기반 파이프라인은 태스크 특화 파인튜닝보다 데이터/평가 설계 역량이 성패를 좌우한다.
-8. 비디오·3D·로보틱스는 공통적으로 시공간 일관성과 메모리 비용 최적화가 핵심 병목이다.
-9. 생성모델 기반 복원/편집 기법은 인식 파이프라인의 전처리와 후처리를 동시에 재정의한다.
-10. 오픈보캐브러리 검출/분할은 라벨 비용을 낮추지만 안전성/허위탐지 관리가 필수다.
-11. 현업 적용에서는 정확도 단일지표보다 latency, power, failure mode 지표의 가중치가 높아진다.
-12. 학회 성과를 제품으로 전환하려면 데이터 거버넌스와 지속평가(MLOps) 체계가 선행되어야 한다.
-13. 기초모델 기반 파이프라인은 태스크 특화 파인튜닝보다 데이터/평가 설계 역량이 성패를 좌우한다.
-14. 비디오·3D·로보틱스는 공통적으로 시공간 일관성과 메모리 비용 최적화가 핵심 병목이다.
-15. 생성모델 기반 복원/편집 기법은 인식 파이프라인의 전처리와 후처리를 동시에 재정의한다.
-16. 오픈보캐브러리 검출/분할은 라벨 비용을 낮추지만 안전성/허위탐지 관리가 필수다.
-17. 현업 적용에서는 정확도 단일지표보다 latency, power, failure mode 지표의 가중치가 높아진다.
-18. 학회 성과를 제품으로 전환하려면 데이터 거버넌스와 지속평가(MLOps) 체계가 선행되어야 한다.
-19. 기초모델 기반 파이프라인은 태스크 특화 파인튜닝보다 데이터/평가 설계 역량이 성패를 좌우한다.
-20. 비디오·3D·로보틱스는 공통적으로 시공간 일관성과 메모리 비용 최적화가 핵심 병목이다.
-21. 생성모델 기반 복원/편집 기법은 인식 파이프라인의 전처리와 후처리를 동시에 재정의한다.
-22. 오픈보캐브러리 검출/분할은 라벨 비용을 낮추지만 안전성/허위탐지 관리가 필수다.
-23. 현업 적용에서는 정확도 단일지표보다 latency, power, failure mode 지표의 가중치가 높아진다.
-24. 학회 성과를 제품으로 전환하려면 데이터 거버넌스와 지속평가(MLOps) 체계가 선행되어야 한다.
-25. 기초모델 기반 파이프라인은 태스크 특화 파인튜닝보다 데이터/평가 설계 역량이 성패를 좌우한다.
-26. 비디오·3D·로보틱스는 공통적으로 시공간 일관성과 메모리 비용 최적화가 핵심 병목이다.
-27. 생성모델 기반 복원/편집 기법은 인식 파이프라인의 전처리와 후처리를 동시에 재정의한다.
-28. 오픈보캐브러리 검출/분할은 라벨 비용을 낮추지만 안전성/허위탐지 관리가 필수다.
-29. 현업 적용에서는 정확도 단일지표보다 latency, power, failure mode 지표의 가중치가 높아진다.
-30. 학회 성과를 제품으로 전환하려면 데이터 거버넌스와 지속평가(MLOps) 체계가 선행되어야 한다.
-31. 기초모델 기반 파이프라인은 태스크 특화 파인튜닝보다 데이터/평가 설계 역량이 성패를 좌우한다.
-32. 비디오·3D·로보틱스는 공통적으로 시공간 일관성과 메모리 비용 최적화가 핵심 병목이다.
-33. 생성모델 기반 복원/편집 기법은 인식 파이프라인의 전처리와 후처리를 동시에 재정의한다.
-34. 오픈보캐브러리 검출/분할은 라벨 비용을 낮추지만 안전성/허위탐지 관리가 필수다.
-35. 현업 적용에서는 정확도 단일지표보다 latency, power, failure mode 지표의 가중치가 높아진다.
-36. 학회 성과를 제품으로 전환하려면 데이터 거버넌스와 지속평가(MLOps) 체계가 선행되어야 한다.
-37. 기초모델 기반 파이프라인은 태스크 특화 파인튜닝보다 데이터/평가 설계 역량이 성패를 좌우한다.
-38. 비디오·3D·로보틱스는 공통적으로 시공간 일관성과 메모리 비용 최적화가 핵심 병목이다.
-39. 생성모델 기반 복원/편집 기법은 인식 파이프라인의 전처리와 후처리를 동시에 재정의한다.
-40. 오픈보캐브러리 검출/분할은 라벨 비용을 낮추지만 안전성/허위탐지 관리가 필수다.
-41. 현업 적용에서는 정확도 단일지표보다 latency, power, failure mode 지표의 가중치가 높아진다.
-42. 학회 성과를 제품으로 전환하려면 데이터 거버넌스와 지속평가(MLOps) 체계가 선행되어야 한다.
-43. 기초모델 기반 파이프라인은 태스크 특화 파인튜닝보다 데이터/평가 설계 역량이 성패를 좌우한다.
-44. 비디오·3D·로보틱스는 공통적으로 시공간 일관성과 메모리 비용 최적화가 핵심 병목이다.
-45. 생성모델 기반 복원/편집 기법은 인식 파이프라인의 전처리와 후처리를 동시에 재정의한다.
-46. 오픈보캐브러리 검출/분할은 라벨 비용을 낮추지만 안전성/허위탐지 관리가 필수다.
-47. 현업 적용에서는 정확도 단일지표보다 latency, power, failure mode 지표의 가중치가 높아진다.
-48. 학회 성과를 제품으로 전환하려면 데이터 거버넌스와 지속평가(MLOps) 체계가 선행되어야 한다.
-49. 기초모델 기반 파이프라인은 태스크 특화 파인튜닝보다 데이터/평가 설계 역량이 성패를 좌우한다.
-50. 비디오·3D·로보틱스는 공통적으로 시공간 일관성과 메모리 비용 최적화가 핵심 병목이다.
-51. 생성모델 기반 복원/편집 기법은 인식 파이프라인의 전처리와 후처리를 동시에 재정의한다.
-52. 오픈보캐브러리 검출/분할은 라벨 비용을 낮추지만 안전성/허위탐지 관리가 필수다.
-53. 현업 적용에서는 정확도 단일지표보다 latency, power, failure mode 지표의 가중치가 높아진다.
-54. 학회 성과를 제품으로 전환하려면 데이터 거버넌스와 지속평가(MLOps) 체계가 선행되어야 한다.
-55. 기초모델 기반 파이프라인은 태스크 특화 파인튜닝보다 데이터/평가 설계 역량이 성패를 좌우한다.
-56. 비디오·3D·로보틱스는 공통적으로 시공간 일관성과 메모리 비용 최적화가 핵심 병목이다.
-57. 생성모델 기반 복원/편집 기법은 인식 파이프라인의 전처리와 후처리를 동시에 재정의한다.
-58. 오픈보캐브러리 검출/분할은 라벨 비용을 낮추지만 안전성/허위탐지 관리가 필수다.
-59. 현업 적용에서는 정확도 단일지표보다 latency, power, failure mode 지표의 가중치가 높아진다.
-60. 학회 성과를 제품으로 전환하려면 데이터 거버넌스와 지속평가(MLOps) 체계가 선행되어야 한다.
+## 5. 2026-2027 Research Agenda for Direction Setting
 
+### 5.1 Priority Tracks (Impact x Feasibility)
+
+| Track | Technical Objective | Expected Impact | Execution Risk | Priority |
+|---|---|---|---|---:|
+| T1: Generative-Robust Integration | Joint restoration and recognition under adverse inputs | Very High | Medium-High | 1 |
+| T2: Video-3D World Modeling | Long-horizon consistent dynamic scene reasoning | Very High | High | 2 |
+| T3: Open-World VLM Detection | Reduce label cost while preserving transferability | High | Medium | 3 |
+| T4: Agentic Vision Loop | Planning-action-verification with uncertainty feedback | High | High | 4 |
+| T5: Deployment Optimization Layer | Reduce latency/cost with bounded accuracy loss | High | Medium | 5 |
+
+### 5.2 Testable Hypotheses and Protocols
+
+1. T1 hypothesis: feature-space regularization with generative priors beats input-level restoration for robustness-cost tradeoff.
+- Experiment: same backbone, restoration-first vs feature-regularized pipeline
+- Metrics: mAP/IoU, corruption error, latency
+- Success: robustness +3pp with <=15% latency overhead
+
+2. T2 hypothesis: explicit+implicit hybrid 3D representation lowers long-horizon drift.
+- Experiment: explicit-only vs implicit-only vs hybrid
+- Metrics: trajectory error, temporal consistency, FPS
+- Success: >=20% drift reduction with real-time threshold
+
+3. T3 hypothesis: hard-negative visual-language mining outperforms prompt-only tuning in open-vocab detection.
+- Experiment: prompt augmentation vs hard-negative curriculum
+- Metrics: open-vocab mAP, false-positive rate, bias gap
+- Success: mAP +2pp and FPR -10%
+
+4. T4 hypothesis: uncertainty-aware planning reduces compounding error in agent loops.
+- Experiment: planner with and without uncertainty channel
+- Metrics: task success rate, recovery steps, cost per episode
+- Success: success +8pp and recovery steps -15%
+
+5. T5 hypothesis: joint distillation+quantization training dominates sequential compression.
+- Experiment: sequential pipeline vs joint optimization
+- Metrics: accuracy delta, latency, memory, power
+- Success: <=1pp accuracy loss with >=30% latency reduction
+
+### 5.3 Quarter-by-Quarter Execution Template
+
+1. Q2 2026: lock common evaluation harness (accuracy + robustness + efficiency + safety).
+2. Q3 2026: run T1/T3 in parallel; stabilize data and safety validation stack.
+3. Q4 2026: expand T2/T4 for long-horizon integration.
+4. Q1 2027: execute T5 and produce deployment-grade runtime profile.
+5. Q2 2027: submit integrated-system paper with failure analysis and cost disclosure.
+
+## 6. Decision Rules and Reporting Standard
+
+### 6.1 Project Selection Rules
+
+1. Down-rank ideas without data/evaluation assets.
+2. Reject single-metric SOTA projects without deployment path.
+3. Prefer high-coupling bridge themes from Section 4.3.
+4. Do not start open-world projects without safety protocol.
+5. Keep only themes that can target at least two venue styles.
+
+### 6.2 Minimum Paper Design Checklist
+
+- Problem framing: benchmark gain vs new failure mode mitigation
+- Method decomposition: isolate accuracy gains vs cost increases
+- Evaluation: accuracy + robustness + efficiency + safety (mandatory)
+- Reproducibility: code, seed, environment, checkpoint, preprocessing
+- Failure taxonomy: top-k failure types and mitigation mapping
+
+### 6.3 Final Position
+
+The main shift after 2024 is from isolated model competition to systems competition under multi-constraints.
+The strongest forward strategy is to design an integrated stack: problem definition, evaluation protocol, deployment path, and failure governance.
