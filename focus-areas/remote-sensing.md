@@ -1,23 +1,23 @@
-# Remote Sensing & Maritime Vision
+# Remote Sensing & Maritime Vision (원격탐사 & 해양 비전)
 
-Computer vision for remote sensing, aerial imagery, and maritime applications has unique requirements and challenges. This document covers specialized techniques for satellite, drone, and ship detection.
+원격탐사, 항공 영상, 해양 애플리케이션을 위한 컴퓨터 비전은 고유한 요구사항과 도전을 가집니다. 이 문서는 위성, 드론, 선박 감지를 위한 특수 기법을 다룹니다.
 
-## 📚 Overview
+## 📚 개요
 
-**Remote Sensing Applications:**
-- **Satellite imagery**: Earth observation
-- **Aerial imaging**: Drone surveillance, mapping
-- **Maritime**: Ship detection, port monitoring
-- **Agricultural**: Crop monitoring, land use
-- **Disaster response**: Flood, fire assessment
-- **Urban planning**: Infrastructure development
+**원격탐사 애플리케이션:**
+- **위성 영상**: 지구 관측
+- **항공 영상**: 드론 감시, 매핑
+- **해양**: 선박 감지, 항구 모니터링
+- **농업**: 작물 모니터링, 토지 이용
+- **재난 대응**: 홍수, 화재 평가
+- **도시 계획**: 인프라 개발
 
-**Key Challenges:**
-- **Small objects**: Ships, vehicles appear tiny
-- **Multi-scale**: Varying resolutions (0.3m - 1km/pixel)
-- **Anisotropic**: Objects in different orientations
-- **Cloud cover**: Occlusions, quality variations
-- **Real-time**: Timely detection for safety applications
+**주요 도전 과제:**
+- **소형 객체**: 선박, 차량이 매우 작게 보임
+- **다중 스케일**: 다른 해상도 (0.3m - 1km/pixel)
+- **비등방성**: 다른 방향의 객체
+- **구름**: 가림, 품질 변동
+- **실시간**: 안전 애플리케이션을 위한 시기적 감지
 
 ## 🔷 Satellite Imagery
 
@@ -76,8 +76,8 @@ class YOLOv8SmallOptimized:
 
 **Performance on Satellite Small Objects:**
 
-| Method | Input Size | Small Object mAP | Total mAP |
-|--------|-----|------|-------|----|
+| 방법 | 입력 크기 | 소형 객체 mAP | 총 mAP |
+|----|--|----|-----|
 | YOLOv8-standard | 640 | 38.2% | 62.5% |
 | YOLOv8-small | 1280 | 45.8% | 64.2% |
 | YOLOv8-tiny | 1280 | 52.3% | 65.1% |
@@ -181,18 +181,18 @@ class MultiTaskRemoteSensing(nn.Module):
 
 ## 🛳️ Maritime Vision
 
-### Ship Detection
+### Ship Detection (선박 감지)
 
 **Key Datasets:**
-- **DOTA**: Datasets for Object DEtection in Aerial images
-- **SARD**: Ship Aircraft Radar Detection
-- **HRSID**: High-Resolution Ship Image Dataset
-- **SSDD**: Ship Ship Detection Dataset
+- **DOTA**: Aerial 이미지 객체 감지
+- **SARD**: 선박 항공 레이다 감지
+- **HRSID**: 고해상도 선박 이미지
+- **SSDD**: 선박 감지 데이터셋
 
 **HRSID Dataset:**
-- **17,000+ ships**
-- **8 ship categories**: Cargo, container, tug, etc.
-- **High resolution**: Average 0.5-3m/px
+- **17,000+ ships**: 17,000 개 이상
+- **8 ship categories**: 8 개 카테고리
+- **High resolution**: 고해상도
 
 **YOLO for Ships:**
 ```python
@@ -212,8 +212,8 @@ class ShipDetectorYOLO:
 
 **Performance on HRSID:**
 
-| Method | mAP@0.5 | mAP@0.5:0.95 | Latency |
-|--------|-----|------|----|----|
+| 방법 | mAP@0.5 | mAP@0.5:0.95 | 지연 |
+|---|-----|----|--|
 | Faster R-CNN | 82.5% | 68.2% | 120ms |
 | YOLOv5 | 85.2% | 72.1% | 45ms |
 | YOLOv8 | 86.8% | 74.3% | 38ms |

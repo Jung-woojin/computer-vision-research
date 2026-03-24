@@ -1,26 +1,26 @@
-# Boundary-Sensitive Segmentation
+# 경계 민감 세그멘테이션 (Boundary-Sensitive Segmentation)
 
-Precise boundary detection is crucial for many computer vision applications. This document covers methods for accurate boundary-aware segmentation, edge preservation, and precise contour detection.
+정확한 경계 검출은 많은 컴퓨터 비전 애플리케이션에서 중요합니다. 이 문서는 정확한 경계 인식 세그멘테이션, 엣지 보존, 정밀한 윤곽 검출을 위한 방법을 다룹니다.
 
-## 📚 Overview
+## 📚 개요
 
-**Boundary-Sensitive Segmentation** focuses on achieving precise object boundaries in segmentation tasks. This is critical for:
-- Medical imaging (tumor boundaries)
-- Autonomous driving (road markings)
-- Robotics (object manipulation)
-- Image editing (precise selections)
+**경계 민감 세그멘테이션**은 세그멘테이션 작업에서 정밀한 객체 경계를 달성하는 데 중점을 둡니다. 다음에 중요합니다:
+- 의료 영상 (종양 경계)
+- 자율주행 (차도 표시)
+- 로봇공학 (객체 조작)
+- 이미지 편집 (정밀 선택)
 
-**Key Challenges:**
-- **Ambiguous boundaries**: Where exactly does object end?
-- **Blurry edges**: Out-of-focus regions
-- **Low contrast**: Similar colors on both sides
-- **Thin structures**: Narrow objects, fine details
-- **Multi-scale**: Boundaries at different scales
+**주요 도전 과제:**
+- **모호한 경계**: 객체가 정확히 어디서 끝나는가?
+- **흐릿한 엣지**: 초점이 맞지 않은 영역
+- **낮은 대비**: 양쪽의 유사한 색상
+- **미세 구조**: 좁은 객체, 세부 사항
+- **다중 스케일**: 다른 스케일의 경계
 
-**Metrics:**
-- **Boundary F1 Score**: Precision/recall at boundaries
-- **Dice coefficient**: Overall overlap
-- **Hausdorff distance**: Maximum boundary deviation
+**지표:**
+- **Boundary F1 Score**: 경계의 정밀도/재현율
+- **Dice coefficient**: 전체 겹침
+- **Hausdorff distance**: 최대 경계 편차
 
 ## 🔷 Boundary-Aware Loss Functions
 
@@ -499,36 +499,36 @@ E_internal = α·E_continuity + β·E_curvature
 E_external = -λ·∫ gradient(x) · ds
 ```
 
-## 📊 Performance Comparison
+## 📊 성능 비교
 
-### PASCAL VOC 2012 Validation
+### PASCAL VOC 2012 검증
 
-| Method | mIoU | Boundary F1 | Latency |
-|--------|-----|---|---|----|
+| 방법 | mIoU | Boundary F1 | 지연 |
+|----|----|---|----|
 | DeepLab v3+ | 80.0% | 82.1% | 130ms |
 | SCRNet | 79.3% | 84.1% | 125ms |
 | BANet | 79.3% | 85.6% | 135ms |
-| DeepLab v3+ Boundary | 80.3% | 86.2% | 140ms |
-| Hierarchical Boundary | 81.2% | 87.5% | 150ms |
-| Boundary-aware Transformer | 81.8% | 88.3% | 160ms |
+| DeepLab v3+ 경계 | 80.3% | 86.2% | 140ms |
+| 계층적 경계 | 81.2% | 87.5% | 150ms |
+| 경계 인식 Transformer | 81.8% | 88.3% | 160ms |
 
-### ADE20K Validation
+### ADE20K 검증
 
-| Method | mIoU | Boundary F1 | Small Objects |
-|--------|-----|---|---|-----|
+| 방법 | mIoU | Boundary F1 | 소형 객체 |
+|---|----|---|---|
 | DeepLab v3+ | 45.8% | 48.2% | 35.6% |
 | SCRNet | 47.2% | 50.3% | 37.8% |
-| Hierarchical Boundary | 48.5% | 52.1% | 40.2% |
-| Boundary Transformer | 49.3% | 53.4% | 42.5% |
+| 계층적 경계 | 48.5% | 52.1% | 40.2% |
+| 경계 Transformer | 49.3% | 53.4% | 42.5% |
 
-### Medical Imaging (Tumor Segmentation)
+### 의료 영상 (종양 세그멘테이션)
 
-| Method | Dice | Boundary Dice | Hausdorff Distance |
-|--------|-----|---|---|----|
+| 방법 | Dice | 경계 Dice | Hausdorff 거리 |
+|---|----|---|---|
 | U-Net | 0.875 | 0.823 | 5.2px |
-| U-Net Boundary | 0.892 | 0.865 | 3.8px |
-| Boundary-aware | 0.903 | 0.887 | 3.1px |
-| Hierarchical | 0.912 | 0.905 | 2.7px |
+| U-Net 경계 | 0.892 | 0.865 | 3.8px |
+| 경계 인식 | 0.903 | 0.887 | 3.1px |
+| 계층적 | 0.912 | 0.905 | 2.7px |
 
 ## 🔬 Best Practices
 

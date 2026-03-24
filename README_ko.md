@@ -21,8 +21,8 @@
 - **[경계 민감 세그멘테이션](./focus-areas/boundary-segmentation.md)** - 정확한 경계 검출
 
 ### 비교 및 리소스
-- **[방법론 비교](./comparisons/methods-comparison.md)** - 성능 벤치마크 및 trade-off
-- **[리소스 & 구현체](./resources.md)** - 코드 저장소, 데이터셋, 튜토리얼
+- **[방법론 비교](./comparisons/methods-comparison_ko.md)** - 성능 벤치마크 및 trade-off
+- **[리소스 & 구현체](./resources_ko.md)** - 코드 저장소, 데이터셋, 튜토리얼
 
 ## 🎯 주요 특징
 
